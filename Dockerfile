@@ -6,11 +6,13 @@ COPY ./ ./
 RUN mkdir -p $GOPATH/pkg && dep ensure -v -vendor-only && \
 	CGO_ENABLED=0 go build -ldflags "-X main.BuildTime=`date -u '+%Y-%m-%d_%I:%M:%S%p'` -X main.Version=`git -C ./ describe --abbrev=0 --tags HEAD`" -a -installsuffix cgo -o dist/gatekeeper ./cmd/gatekeeper
 
+FROM docker.br.hmheng.io/base-ubuntu:16.04
+
 FROM scratch
 COPY --from=0 /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=0 /go/src/github.com/nemosupremo/vault-gatekeeper/dist/gatekeeper /
 # Create the /tmp directory
 WORKDIR /tmp
 WORKDIR /
-ENTRYPOINT ["/gatekeeper"]
-CMD ["server"]
+# ENTRYPOINT ["/gatekeeper"]
+# CMD ["server"]
