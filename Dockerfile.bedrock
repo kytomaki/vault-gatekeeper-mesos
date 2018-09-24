@@ -1,0 +1,7 @@
+FROM docker.br.hmheng.io/base-ubuntu:16.04
+
+COPY dist/gatekeeper /
+WORKDIR /tmp
+WORKDIR /
+ENTRYPOINT ["/gatekeeper"]
+CMD ["server"]
