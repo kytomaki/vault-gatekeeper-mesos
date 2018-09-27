@@ -1,5 +1,7 @@
 FROM docker.br.hmheng.io/base-ubuntu:16.04
 
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends curl
 COPY dist/gatekeeper /
 WORKDIR /tmp
 WORKDIR /
