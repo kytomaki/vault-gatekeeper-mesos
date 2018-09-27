@@ -1,6 +1,5 @@
 FROM docker.br.hmheng.io/base-ubuntu:16.04
 
 COPY dist/gatekeeper /
-COPY vault* /tmp/
 WORKDIR /tmp
 WORKDIR /
