@@ -1,0 +1,14 @@
+include common.mk
+
+$(RPM): $(GATEKEEPER)
+	fpm \
+	  -p $(RPM) \
+	  -s dir \
+	  -t rpm \
+	  --name $(RPM_NAME) \
+	  --version $(VERSION) \
+	  --iteration $(ITERATION) \
+	  --architecture x86_64 \
+	  --force \
+	  -C dist \
+	  .
