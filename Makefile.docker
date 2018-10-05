@@ -1,6 +1,8 @@
 include common.mk
 
 $(RPM): $(GATEKEEPER)
+	mkdir -p dist/package
+	install $(GATEKEEPER) dist/package
 	fpm \
 	  -p $(RPM) \
 	  -s dir \
@@ -10,5 +12,5 @@ $(RPM): $(GATEKEEPER)
 	  --iteration $(ITERATION) \
 	  --architecture x86_64 \
 	  --force \
-	  -C dist \
+	  -C dist/package \
 	  .
