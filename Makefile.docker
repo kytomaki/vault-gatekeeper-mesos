@@ -1,6 +1,6 @@
 include common.mk
 
-$(RPM): $(GATEKEEPER)
+$(RPM):
 	mkdir -p dist/package
 	install $(GATEKEEPER) dist/package
 	fpm \
