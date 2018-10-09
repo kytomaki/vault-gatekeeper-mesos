@@ -8,7 +8,7 @@ $(RPM):
 	mkdir -p dist/package
 	install $(GATEKEEPER) dist/package
 	fpm \
-	  -p $(RPM) \
+	  -p dist/$(RPM) \
 	  -s dir \
 	  -t rpm \
 	  --name $(RPM_NAME) \

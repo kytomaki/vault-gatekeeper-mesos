@@ -9,6 +9,6 @@ $(RPM): $(GATEKEEPER)
 	$(DOCKER) docker.br.hmheng.io/hmheng-infra/fpm:latest make -C /go/src/github.com/nemosupremo/vault-gatekeeper -f Makefile.docker $@
 
 clean:
-	rm -r *.rpm dist/gatekeeper dist/package
+	rm -r dist/*.rpm dist/gatekeeper dist/package
 
 .PHONY: all clean
