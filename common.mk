@@ -1,4 +1,4 @@
-DOCKER := docker run --rm -v $(shell pwd)/../../../..:/go
+DOCKER := docker run --rm -v $(shell pwd):/go/src/github.com/nemosupremo/vault-gatekeeper
 RPM_NAME := gatekeeper
 VERSION := 1.0.3
 ITERATION := 1

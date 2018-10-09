@@ -1,5 +1,9 @@
 include common.mk
 
+$(GATEKEEPER):
+	go get -d ./...
+	go build -ldflags "-X main.BuildTime=`date -u '+%Y-%m-%d_%I:%M:%S%p'` -X main.Version=`git -C ./ describe --abbrev=0 --tags HEAD`" -a -installsuffix cgo -o dist/gatekeeper github.com/nemosupremo/vault-gatekeeper/cmd/gatekeeper
+
 $(RPM):
 	mkdir -p dist/package
 	install $(GATEKEEPER) dist/package
