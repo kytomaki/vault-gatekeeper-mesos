@@ -4,9 +4,7 @@ $(GATEKEEPER):
 	go get -d ./...
 	go build -ldflags "-X main.BuildTime=`date -u '+%Y-%m-%d_%I:%M:%S%p'` -X main.Version=`git -C ./ describe --abbrev=0 --tags HEAD`" -a -installsuffix cgo -o dist/gatekeeper github.com/nemosupremo/vault-gatekeeper/cmd/gatekeeper
 
-$(RPM):
-	mkdir -p dist/package
-	install $(GATEKEEPER) dist/package
+dist/$(RPM): $(GATEKEEPER)
 	fpm \
 	  -p dist/$(RPM) \
 	  -s dir \
@@ -16,5 +14,5 @@ $(RPM):
 	  --iteration $(ITERATION) \
 	  --architecture x86_64 \
 	  --force \
-	  -C dist/package \
-	  .
+	  --prefix /usr/loca/bin
+	  $(GATEKEEPER)
