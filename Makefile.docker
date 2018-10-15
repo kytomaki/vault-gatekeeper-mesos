@@ -14,5 +14,5 @@ dist/$(RPM): $(GATEKEEPER)
 	  --iteration $(ITERATION) \
 	  --architecture x86_64 \
 	  --force \
-	  --prefix /usr/loca/bin
+	  --prefix /usr/bin
 	  $(GATEKEEPER)
