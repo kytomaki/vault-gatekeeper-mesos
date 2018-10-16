@@ -4,7 +4,7 @@ $(BINARY):
 	go get -d ./...
 	go build -ldflags "-X main.BuildTime=`date -u '+%Y-%m-%d_%I:%M:%S%p'` -X main.Version=`git -C ./ describe --abbrev=0 --tags HEAD`" -a -installsuffix cgo -o $@ github.com/nemosupremo/vault-gatekeeper/cmd/gatekeeper
 
-dist/$(RPM): dist/package/usr/bin/$(NAME)
+dist/$(RPM): dist/package/usr/bin/$(NAME) dist/package/etc/init/$(NAME).conf dist/package/etc/sysconfig/$(NAME) dist/package/etc/logrotate.d/$(NAME)
 	fpm \
 	  -p dist/$(RPM) \
 	  -s dir \
@@ -22,5 +22,17 @@ dist/package/usr/bin/$(NAME): $(BINARY) dist/package/usr/bin
 		-m 0555 \
 		$< $@
 
-dist/package/usr/bin:
+dist/package/etc/init/$(NAME).conf: packaging-scripts/upstart.conf dist/package/etc/init
+	install \
+		$< $@
+
+dist/package/etc/sysconfig/$(NAME): packaging-scripts/sysconfig dist/package/etc/sysconfig
+	install \
+		$< $@
+
+dist/package/etc/logrotate.d/$(NAME): packaging-scripts/logrotate dist/package/etc/logrotate.d dist/package/var/log/$(NAME)
+	install \
+		$< $@
+
+dist/package/usr/bin dist/package/etc/init dist/package/etc/sysconfig dist/package/etc/logrotate.d dist/package/var/log/$(NAME):
 	install -d $@

@@ -1,0 +1,158 @@
+## Http
+
+# Http listen address
+# default :9201
+#
+# LISTEN_ADDR=":9201"
+
+# Path to a HTTP certificate. Setting this option will enable TLS
+#
+# TLS_CRT="/etc/gatekeeper/tls.crt"
+
+# Path to a HTTP private key. Setting this option will enable TLS.
+#
+# TLS_KEY="/etc/gatekeeper/tls.key"
+
+
+## Scheduler Providers
+
+# A comma separated list of scheduler backend providers. Can include mesos or ecs
+# default: mesos
+#
+# SCEDULERS="mesos"
+
+# URI to the mesos masters. Multiple hosts can be specified by comma separating the hosts in the URI. A zookeeper path can also be specified with zk or zks as the protocol, and the path as the zookeeper path.
+#
+# MESOS_MASTER="https://master01.infra:5050,master02.infra:5050,master03.infra:5050
+
+# When enabled, Gatekeeper will check that the remote address of the http request requesting the token is the same address as the agent running the task. this ensures that requests for tokens can only originate from servers that are running the container
+# default false
+#
+# HOST_CHECK="false"
+
+# Instead of using the image's name in the policy (for example, using the Marathon App ID), the Docker image will be used. This allows you to specify your policy based on the docker image running.
+# default false
+#
+# USE_IMAGE_NAME="false"
+
+
+## Vault
+
+# Address of the Vault server expressed as a URL and port, for example: https://127.0.0.1:8200/.
+# default http://127.0.0.1:8200/
+#
+# VAULT_ADDR="http://127.0.0.1:8200/"
+
+# Path to a PEM-encoded CA certificate file on the local disk. This file is used to verify the Vault server's SSL certificate. This environment variable takes precedence over VAULT_CAPATH
+#
+# VAULT_CACERT="/etc/gatekeeper/vault-ca.pem"
+
+# Path to a directory of PEM-encoded CA certificate files on the local disk. These certificates are used to verify the Vault server's SSL certificate.
+#
+# VAULT_CAPATH="/etc/gatekeeper/vault-ca"
+
+# Path to a PEM-encoded client certificate on the local disk. This file is used for TLS communication with the Vault server.
+#
+# VAULT_CLIENT_CERT="/etc/gatekeeper/vault-client-crt.pem"
+
+# Path to an unencrypted, PEM-encoded private key on disk which corresponds to the matching client certificate.
+#
+# VAULT_CLIENT_KEY="/etc/gatekeeper/vault-client-key.pem"
+
+# Do not verify Vault's presented certificate before communicating with it.
+# default false
+#
+# VAULT_SKIP_VERIFY="false"
+
+# The KV engine version for secrets mounted on the Gatekeeper policy path. Either 1 or 2
+# default 2
+#
+# VAULT_KV_VERSION="2"
+
+# The path name where the approle auth backend is mounted.
+# default approle
+#
+# VAULT_APPROLE_MOUNT="approle"
+
+
+## Policy
+
+# The task grace period after a task is started where it can request for a Vault Token. Tasks that have been active longer than this period will no longer be able to request tokens.
+# default 2m
+#
+# TASK_GRACE="2m"
+
+# Path to a kv mounted secret engine path, on the Vault server, where the policies are stored. The token that is used to unseal Gatekeeper must have permissions to read and list these paths.
+# default secret/data/gatekeeper
+#
+# POLICY_PATH="secret/data/gatekeeper"
+
+
+## Unsealing
+
+# 
+# Unseals Gatekeeper with the provided Vault Token.
+#
+# VAULT_TOKEN=""
+
+# Unseals Gatekeeper with a response wrapped token. Gatekeeper will unwrap this token using sys/wrapping/unwrap and expects the final token there.
+#
+# AUTH_TOKEN_WRAPPED=""
+
+# Unseals Gatekeeper with an AppRole. Specify the role_id and secret_id.
+#
+# AUTH_APP_ROLE=""
+# AUTH_APP_SECRET=""
+
+# Unseals Gatekeeper with the AWS auth ec2 method. Optionally specify a nonce for repeated authentications. See the Vault AWS Auth docs for more details.
+#
+# AUTH_AWS_EC2=""
+# AUTH_AWS_NONCE=""
+
+# Unseals Gatekeeper with the AWS auth iam method.
+#
+# AUTH_AWS_IAM=""
+
+
+## High Availability
+
+# Usage store must be one of memory or vault. To enable high availability, you must use a strongly consistent store. The store is where Gatekeeper stores information about tasks it has already given tokens to.
+# default memory
+#
+# USAGE_STORE="memory"
+
+# Path to a key, that gatekeeper can access and update to store information about used tokens on the Vault usage store backend. Should not be under --policy-path and must be mounted a v2 kv store
+# default secret/data/gatekeeper-store
+#
+# USAGE_STORE_VAULT_PATH="secret/data/gatekeeper-store"
+
+# A comma separated list of Gatekeeper URIs to use as peers. Gatekeeper will forward requests to unsealed peers if the instance is currently sealed. Gatekeeper will resolve the hostname provided here and treat all the IPs that resolve to that hostname as peers.
+# Note: This option will fail if --usage-store is set to memory.
+# Note: Even in HA mode, all gatekeeper instances must be unsealed individually.
+#
+# PEERS=""
+
+
+## Metrics
+
+# Sets how often gauge statistics will be reported.
+# default 10s
+#
+# METRICS_TICKER="10s"
+
+# Set to a hostname and port of a statsd instance to enable metrics reporting over statsd.
+#
+# METRICS_STATSD=""
+
+# Sets the statsd prefix.
+# default gatekeeper
+#
+# METRICS_STATSD_PREFIX="gatekeeper"
+
+# If set, enables the use of Influx DB tags on the statsd reporter.
+#
+# METRICS_STATSD_INFLUX=""
+
+# If set, enables the use of DataDog tags on the statsd reporter.
+#
+# METRICS_STATSD_DATADOG=""
