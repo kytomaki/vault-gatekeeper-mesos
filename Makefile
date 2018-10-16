@@ -1,16 +1,16 @@
 include common.mk
 
-all: $(GATEKEEPER)
+all: $(BINARY)
 
 rpm: dist/$(RPM)
 
-$(GATEKEEPER) : cmd/gatekeeper/main.go
+$(BINARY) : cmd/gatekeeper/main.go
 	$(DOCKER) docker.br.hmheng.io/hmheng-infra/gatekeeper-build:v1.0.3-10-ga65b145 make -C /go/src/github.com/nemosupremo/vault-gatekeeper -f Makefile.docker $@
 
-dist/$(RPM): $(GATEKEEPER)
+dist/$(RPM): $(BINARY)
 	$(DOCKER) docker.br.hmheng.io/hmheng-infra/fpm:latest make -C /go/src/github.com/nemosupremo/vault-gatekeeper -f Makefile.docker $@
 
 clean:
-	rm -r dist/$(RPM) $(GATEKEEPER)
+	-rm -f dist/$(RPM) $(BINARY)
 
 .PHONY: all rpm clean

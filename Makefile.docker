@@ -1,18 +1,26 @@
 include common.mk
 
-$(GATEKEEPER):
+$(BINARY):
 	go get -d ./...
-	go build -ldflags "-X main.BuildTime=`date -u '+%Y-%m-%d_%I:%M:%S%p'` -X main.Version=`git -C ./ describe --abbrev=0 --tags HEAD`" -a -installsuffix cgo -o dist/gatekeeper github.com/nemosupremo/vault-gatekeeper/cmd/gatekeeper
+	go build -ldflags "-X main.BuildTime=`date -u '+%Y-%m-%d_%I:%M:%S%p'` -X main.Version=`git -C ./ describe --abbrev=0 --tags HEAD`" -a -installsuffix cgo -o $@ github.com/nemosupremo/vault-gatekeeper/cmd/gatekeeper
 
-dist/$(RPM): $(GATEKEEPER)
+dist/$(RPM): dist/package/usr/bin/$(NAME)
 	fpm \
 	  -p dist/$(RPM) \
 	  -s dir \
 	  -t rpm \
-	  --name $(RPM_NAME) \
+	  --name $(NAME) \
 	  --version $(VERSION) \
 	  --iteration $(ITERATION) \
 	  --architecture x86_64 \
 	  --force \
-	  --prefix /usr/bin
-	  $(GATEKEEPER)
+	  -C dist/package \
+	  .
+
+dist/package/usr/bin/$(NAME): $(BINARY) dist/package/usr/bin
+	install \
+		-m 0555 \
+		$< $@
+
+dist/package/usr/bin:
+	install -d $@
